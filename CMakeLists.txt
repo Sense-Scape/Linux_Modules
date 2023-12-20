@@ -24,7 +24,9 @@ add_executable(LinuxModulesTests
 	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
 )
 
-add_subdirectory(components/Base_Module)
+if (NOT TARGET BaseModuleLib)
+        add_subdirectory(components/Base_Module)
+endif()
 
 # Include directories for main code and tests
 target_include_directories(LinuxModulesLib
