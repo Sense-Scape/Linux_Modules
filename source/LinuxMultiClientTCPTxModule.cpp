@@ -1,17 +1,17 @@
-#include "WinMultiClientTCPTxModule.h"
+#include "LinuxMultiClientTCPTxModule.h"
 
-WinMultiClientTCPTxModule::WinMultiClientTCPTxModule(std::string sIPAddress, std::string sTCPPort, unsigned uMaxInputBufferSize, int iDatagramSize = 512) : BaseModule(uMaxInputBufferSize),
+LinuxMultiClientTCPTxModule::LinuxMultiClientTCPTxModule(std::string sIPAddress, std::string sTCPPort, unsigned uMaxInputBufferSize, int iDatagramSize = 512) : BaseModule(uMaxInputBufferSize),
 																																							m_sDestinationIPAddress(sIPAddress),
 																																							m_sTCPAllocatorPortNumber(sTCPPort),
 																																							m_bTCPConnected()
 {
 }
 
-WinMultiClientTCPTxModule::~WinMultiClientTCPTxModule()
+LinuxMultiClientTCPTxModule::~LinuxMultiClientTCPTxModule()
 {
 }
 
-void WinMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16TCPPort)
+void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16TCPPort)
 {
 	// Configuring Web Security Appliance
 	// WSADATA WSA;
@@ -88,7 +88,7 @@ void WinMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16TCP
 	//}
 }
 
-uint16_t WinMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSocket)
+uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSocket)
 {
 	std::vector<char> vcAccumulatedBytes;
 	vcAccumulatedBytes.reserve(sizeof(uint16_t));
@@ -156,7 +156,7 @@ uint16_t WinMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSocket
 	return u16AllocatedPortNumber;
 }
 
-void WinMultiClientTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
+void LinuxMultiClientTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 {
 	while (!m_bShutDown)
 	{
@@ -192,7 +192,7 @@ void WinMultiClientTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 	}
 }
 
-void WinMultiClientTCPTxModule::RunClientThread(int &clientSocket, uint16_t u16AllocatedPortNumber)
+void LinuxMultiClientTCPTxModule::RunClientThread(int &clientSocket, uint16_t u16AllocatedPortNumber)
 {
 	while (!m_bShutDown)
 	{
@@ -241,20 +241,20 @@ void WinMultiClientTCPTxModule::RunClientThread(int &clientSocket, uint16_t u16A
 	m_bTCPConnected = false;
 }
 
-void WinMultiClientTCPTxModule::DisconnectTCPSocket(int &clientSocket)
+void LinuxMultiClientTCPTxModule::DisconnectTCPSocket(int &clientSocket)
 {
 	close(clientSocket);
 	// WSACleanup();
 }
 
-void WinMultiClientTCPTxModule::StartProcessing()
+void LinuxMultiClientTCPTxModule::StartProcessing()
 {
 	// Passing in empty chunk that is not used
 	m_thread = std::thread([this]
 						   { Process(std::shared_ptr<BaseChunk>()); });
 }
 
-void WinMultiClientTCPTxModule::ContinuouslyTryProcess()
+void LinuxMultiClientTCPTxModule::ContinuouslyTryProcess()
 {
 	// Passing in empty chunk that is not used
 	m_thread = std::thread([this]

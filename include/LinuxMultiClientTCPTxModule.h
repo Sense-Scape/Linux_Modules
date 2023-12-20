@@ -1,5 +1,5 @@
-#ifndef WIN_MUlTI_CLIENT_TCP_TX_MODULE
-#define WIN_MUlTI_CLIENT_TCP_TX_MODULE
+#ifndef LINUX_MUlTI_CLIENT_TCP_TX_MODULE
+#define LINUX_MUlTI_CLIENT_TCP_TX_MODULE
 
 /*Standard Includes*/
 #include <sys/types.h>
@@ -14,7 +14,7 @@
 /**
  * @brief Windows TCP Transmit Module to transmit data from a TCP port
  */
-class WinMultiClientTCPTxModule : public BaseModule
+class LinuxMultiClientTCPTxModule : public BaseModule
 {
 
 public:
@@ -25,8 +25,8 @@ public:
      * @param[in] uMaxInputBufferSize snumber of chunk that may be stores in input buffer (unused)
      * @param[in] iDatagramSize RX datagram size
      */
-    WinMultiClientTCPTxModule(std::string sIPAddress, std::string sTCPPort, unsigned uMaxInputBufferSize, int iDatagramSize);
-    ~WinMultiClientTCPTxModule();
+    LinuxMultiClientTCPTxModule(std::string sIPAddress, std::string sTCPPort, unsigned uMaxInputBufferSize, int iDatagramSize);
+    ~LinuxMultiClientTCPTxModule();
 
     /**
      * @brief Starts the  process on its own thread
@@ -42,7 +42,7 @@ public:
      * @brief Returns module type
      * @return ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::WinMultiClientTCPTxModule; };
+    ModuleType GetModuleType() override { return ModuleType::LinuxMultiClientTCPTxModule; };
 
 private:
     std::string m_sDestinationIPAddress;   ///< string format of host IP address
