@@ -23,15 +23,15 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16T
 	// }
 
 	// Configuring protocol to TCP
-	std::cout << "1" << std::endl;
-	socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	WinSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	// if ((WinSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)))
 	// {
 	// 	std::string strFatal = std::string(__FUNCTION__) + ":Windows TCP socket WSA Error. INVALID_SOCKET ";
 	// 	PLOG_FATAL << strFatal;
 	// 	throw;
 	// }
-	std::cout << "1" << std::endl;
+
 	// Allow address reuse
 	int optval = 1;
 	setsockopt(WinSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof(optval));
@@ -41,8 +41,7 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16T
 	// 	PLOG_FATAL << strFatal;
 	// 	throw;
 	// }
-	std::cout
-		<< "1" << std::endl;
+
 	// Keep the connection open
 	int optlen = sizeof(optval);
 	setsockopt(WinSocket, SOL_SOCKET, SO_KEEPALIVE, (char *)&optval, optlen);
@@ -52,13 +51,11 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16T
 	// 	PLOG_FATAL << strFatal;
 	// 	throw;
 	// }
-	std::cout
-		<< "1" << std::endl;
+
 	// Lets start by creating the sock addr
 	sockaddr_in sockaddr;
 	sockaddr.sin_family = AF_INET;
 	sockaddr.sin_port = htons(u16TCPPort);
-	std::cout << "1" << std::endl;
 	std::string strInfo = std::string(__FUNCTION__) + ": Connecting to Server at ip " + m_sDestinationIPAddress + " on port " + std::to_string(u16TCPPort) + "";
 	PLOG_INFO << strInfo;
 
@@ -71,21 +68,21 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &WinSocket, uint16_t u16T
 	// }
 
 	// Then lets do a blocking call to try connect
-	connect(WinSocket, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
-	// if ()
-	//  {
-	//  	std::string strInfo = std::string(__FUNCTION__) + ": Connected to server at ip " + m_sDestinationIPAddress + " on port " + std::to_string(u16TCPPort) + "";
-	//  	PLOG_INFO << strInfo;
-	//  	m_bTCPConnected = true;
-	//  }
-	// else
-	//{
-	//	std::string strWarning = std::string(__FUNCTION__) + ": Failed to connect to the server(" + m_sDestinationIPAddress + ") on port " + std::to_string(u16TCPPort) + ".Error code :" + std::to_string(WSAGetLastError());
-	//	PLOG_WARNING << strWarning;
+	auto a = connect(WinSocket, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
+	if ( a == 0)
+	 {
+	 	std::string strInfo = std::string(__FUNCTION__) + ": Connected to server at ip " + m_sDestinationIPAddress + " on port " + std::to_string(u16TCPPort) + "";
+	 	PLOG_INFO << strInfo;
+	 	m_bTCPConnected = true;
+	 }
+	else
+	{
+		std::string strWarning = std::string(__FUNCTION__) + ": Failed to connect to the server(" + m_sDestinationIPAddress + ") on port " + std::to_string(u16TCPPort) + " with code " + std::to_string(errno);
+		PLOG_WARNING << strWarning;
 
-	//	close(WinSocket);
-	//	m_bTCPConnected = false;
-	//}
+		close(WinSocket);
+		m_bTCPConnected = false;
+	}
 }
 
 uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSocket)
@@ -166,11 +163,12 @@ void LinuxMultiClientTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 			uint16_t u16TCPPort = std::stoi(m_sTCPAllocatorPortNumber);
 
 			// Lets request a port number on which to communicate with the server
+			
 			ConnectTCPSocket(AllocatingServerSocket, u16TCPPort);
 			if (!m_bTCPConnected)
 			{
 				// Could not connect so wait a bit as not to spam logs
-				std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				continue;
 			}
 
