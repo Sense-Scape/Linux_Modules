@@ -9,10 +9,6 @@ on: [push]
 
 permissions:
   contents: read
-
-env:
-  SDL_VIDEODRIVER: "dummy"
-  SDL_AUDIODRIVER: "disk"
     
 jobs:
   build:
