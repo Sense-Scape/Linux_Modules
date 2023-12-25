@@ -43,7 +43,7 @@ public:
      * @brief Returns module type
      * @param[out] ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::SimulatorModule; };
+    ModuleType GetModuleType() override { return ModuleType::SoundCardInterfaceModule; };
 
     /**
      * @brief Check input buffer and try process data
@@ -58,9 +58,9 @@ private:
     std::shared_ptr<TimeChunk> m_pTimeChunk;    ///< Pointer to member time data chunk
     std::vector<uint8_t> m_vu8SourceIdentifier; ///< Source identifier of generated chunks
 
-    snd_pcm_t *capture_handle;
-    snd_pcm_hw_params_t *hw_params;
-    snd_pcm_format_t format = SND_PCM_FORMAT_S16_LE;
+    snd_pcm_t *m_capture_handle;
+    snd_pcm_hw_params_t *m_hw_params;
+    snd_pcm_format_t m_format = SND_PCM_FORMAT_S16_LE;
 
     /**
      * @brief Initializes Time Chunk vectors default values. Initializes according to number of ADCs and their channels
