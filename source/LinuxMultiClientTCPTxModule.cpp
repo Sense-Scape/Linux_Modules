@@ -56,8 +56,6 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &sock, uint16_t u16TCPPor
 uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSocket)
 {
 
-	PLOG_ERROR << "CC";
-
 	std::vector<char> vcAccumulatedBytes;
 	vcAccumulatedBytes.reserve(sizeof(uint16_t));
 	bool bReadError;
@@ -68,27 +66,19 @@ uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSock
 	FD_SET(WinSocket, &readfds);
 	int num_ready = select(WinSocket + 1, &readfds, NULL, NULL, NULL);
 
-	PLOG_ERROR << "DD";
-
 	if (num_ready < 0)
 	{
 		std::string strWarning = std::string(__FUNCTION__) + ": Failed to wait for data on socket ";
 		PLOG_WARNING << strWarning;
 	}
 
-	PLOG_ERROR << "EE";
-
 	// Read the data from the socket
 	if (FD_ISSET(WinSocket, &readfds))
 	{
 
-		PLOG_ERROR << "FF";
-
 		// Arbitrarily using 2048 and 512
 		while (vcAccumulatedBytes.size() < sizeof(uint16_t))
 		{
-
-			PLOG_ERROR << "GG";
 
 			std::vector<char> vcByteData;
 			vcByteData.resize(sizeof(uint16_t));
@@ -107,8 +97,6 @@ uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSock
 				PLOG_WARNING << strWarning;
 			}
 
-			PLOG_ERROR << "HH";
-
 			// And then try store data
 			if (i16ReceivedDataLength > vcByteData.size())
 			{
@@ -118,12 +106,8 @@ uint16_t LinuxMultiClientTCPTxModule::WaitForReturnedPortAllocation(int &WinSock
 				break;
 			}
 
-			PLOG_ERROR << "II";
-
 			for (int i = 0; i < i16ReceivedDataLength; i++)
 				vcAccumulatedBytes.emplace_back(vcByteData[i]);
-
-			PLOG_ERROR << "JJ";
 		}
 	}
 	else
@@ -153,15 +137,13 @@ void LinuxMultiClientTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 
 			ConnectTCPSocket(AllocatingServerSocket, u16TCPPort);
 
-			PLOG_ERROR << "AA";
-
 			if (!m_bTCPConnected)
 			{
 				// Could not connect so wait a bit as not to spam logs
 				std::this_thread::sleep_for(std::chrono::milliseconds(500));
 				continue;
 			}
-			PLOG_ERROR << "BB";
+
 			auto u16AllocatedPortNumber = WaitForReturnedPortAllocation(AllocatingServerSocket);
 			DisconnectTCPSocket(AllocatingServerSocket);
 
