@@ -65,22 +65,22 @@ void SoundCardInterfaceModule::UpdatePCMSamples()
 
     int i;
     int err;
-    char *buffer;
-    int buffer_frames = 512;
+    char *pcBuffer;
+    int iBufferFrames = 512;
 
-    buffer = (char *)malloc(512 * snd_pcm_format_width(format) / 8 * 4);
-    if (buffer == NULL)
+    pcBuffer = (char *)malloc(512 * snd_pcm_format_width(m_format) / 8 * 4);
+    if (pcBuffer == NULL)
     {
         fprintf(stderr, "Failed to allocate memory for buffer\n");
         exit(1);
     }
 
-    err = snd_pcm_wait(capture_handle, -1);
-    if ((err = snd_pcm_readi(capture_handle, buffer, buffer_frames)) != buffer_frames)
+    err = snd_pcm_wait(m_capture_handle, -1);
+    if ((err = snd_pcm_readi(m_capture_handle, pcBuffer, iBufferFrames)) != iBufferFrames)
     {
         fprintf(stderr, "Read from audio interface failed (%d): %s\n",
                 err, snd_strerror(err));
-        free(buffer);
+        free(pcBuffer);
         exit(1);
     }
 
@@ -90,11 +90,11 @@ void SoundCardInterfaceModule::UpdatePCMSamples()
         {
             unsigned uBufferOffset = uCurrentSampleIndex * m_uNumChannels * 2;
             unsigned uChannelOffset = 2 * uCurrentChannelIndex;
-            m_pTimeChunk->m_vvi16TimeChunks[uCurrentChannelIndex][uCurrentSampleIndex] = ((*buffer + uBufferOffset + uChannelOffset) | ((*(buffer + uBufferOffset + (uChannelOffset + 1))) << 8));
+            m_pTimeChunk->m_vvi16TimeChunks[uCurrentChannelIndex][uCurrentSampleIndex] = ((*pcBuffer + uBufferOffset + uChannelOffset) | ((*(pcBuffer + uBufferOffset + (uChannelOffset + 1))) << 8));
         }
     }
 
-    free(buffer);
+    free(pcBuffer);
 }
 
 void SoundCardInterfaceModule::UpdateTimeStamp()
@@ -119,7 +119,7 @@ void SoundCardInterfaceModule::InitALSA()
     int err;
     unsigned int uSampleRate = m_dSampleRate;
 
-    if ((err = snd_pcm_open(&capture_handle, "default", SND_PCM_STREAM_CAPTURE, 0)) < 0)
+    if ((err = snd_pcm_open(&m_capture_handle, "default", SND_PCM_STREAM_CAPTURE, 0)) < 0)
     {
         PLOG_ERROR << "cannot open audio device default (" << snd_strerror(err) << ")";
         exit(1);
@@ -127,7 +127,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "audio interface opened";
 
-    if ((err = snd_pcm_hw_params_malloc(&hw_params)) < 0)
+    if ((err = snd_pcm_hw_params_malloc(&m_hw_params)) < 0)
     {
         PLOG_ERROR << "cannot allocate hardware parameter structure (" << snd_strerror(err) << ")";
         exit(1);
@@ -135,7 +135,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params allocated";
 
-    if ((err = snd_pcm_hw_params_any(capture_handle, hw_params)) < 0)
+    if ((err = snd_pcm_hw_params_any(m_capture_handle, m_hw_params)) < 0)
     {
         PLOG_ERROR << "cannot initialize hardware parameter structure (" << snd_strerror(err) << ")";
         exit(1);
@@ -143,7 +143,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params initialized";
 
-    if ((err = snd_pcm_hw_params_set_access(capture_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0)
+    if ((err = snd_pcm_hw_params_set_access(m_capture_handle, m_hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0)
     {
         PLOG_ERROR << "cannot set access type (" << snd_strerror(err) << ")";
         exit(1);
@@ -151,7 +151,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params access set";
 
-    if ((err = snd_pcm_hw_params_set_format(capture_handle, hw_params, format)) < 0)
+    if ((err = snd_pcm_hw_params_set_format(m_capture_handle, m_hw_params, m_format)) < 0)
     {
         PLOG_ERROR << "cannot set sample format (" << snd_strerror(err) << ")";
         exit(1);
@@ -159,7 +159,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params format set";
 
-    if ((err = snd_pcm_hw_params_set_rate_near(capture_handle, hw_params, &(uSampleRate), 0)) < 0)
+    if ((err = snd_pcm_hw_params_set_rate_near(m_capture_handle, m_hw_params, &(uSampleRate), 0)) < 0)
     {
         PLOG_ERROR << "cannot set sample rate (" << snd_strerror(err) << ")";
         exit(1);
@@ -167,7 +167,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params rate set";
 
-    if ((err = snd_pcm_hw_params_set_channels(capture_handle, hw_params, 4)) < 0)
+    if ((err = snd_pcm_hw_params_set_channels(m_capture_handle, m_hw_params, m_uNumChannels)) < 0)
     {
         PLOG_ERROR << "cannot set channel count (" << snd_strerror(err) << ")";
         exit(1);
@@ -175,7 +175,7 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params channels set";
 
-    if ((err = snd_pcm_hw_params(capture_handle, hw_params)) < 0)
+    if ((err = snd_pcm_hw_params(m_capture_handle, m_hw_params)) < 0)
     {
         PLOG_ERROR << "cannot set parameters (" << snd_strerror(err) << ")";
         exit(1);
@@ -183,11 +183,11 @@ void SoundCardInterfaceModule::InitALSA()
 
     PLOG_INFO << "hw_params set";
 
-    snd_pcm_hw_params_free(hw_params);
+    snd_pcm_hw_params_free(m_hw_params);
 
     PLOG_INFO << "hw_params freed";
 
-    if ((err = snd_pcm_prepare(capture_handle)) < 0)
+    if ((err = snd_pcm_prepare(m_capture_handle)) < 0)
     {
         PLOG_ERROR << "cannot prepare audio interface for use (" << snd_strerror(err) << ")";
         exit(1);
