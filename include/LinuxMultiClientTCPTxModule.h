@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 
 /*Custom Includes*/
 #include "BaseModule.h"
@@ -54,7 +55,7 @@ private:
      * @param[in] WinSocket reference to TCP socket which one wishes to use
      * @param[in] u16TCPPort uint16_t port number which one whishes to use
      */
-    void ConnectTCPSocket(int &WinSocket, uint16_t u16TCPPort);
+    void ConnectTCPSocket(int &sock, uint16_t u16TCPPort);
 
     /**
      * @brief Waits for allocated port number using given socket

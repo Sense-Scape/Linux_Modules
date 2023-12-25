@@ -28,6 +28,9 @@ if (NOT TARGET BaseModuleLib)
         add_subdirectory(components/Base_Module)
 endif()
 
+find_library(ALSA_LIBRARY asound)     
+target_link_libraries(LinuxModulesLib ${ALSA_LIBRARY})
+
 # Include directories for main code and tests
 target_include_directories(LinuxModulesLib
 	PRIVATE ${INCLUDE_DIR}
