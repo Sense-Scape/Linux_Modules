@@ -11,7 +11,8 @@ permissions:
   contents: read
 
 env:
-   SDL_AUDIODRIVER: "disk"
+  SDL_VIDEODRIVER: "dummy"
+  SDL_AUDIODRIVER: "disk"
     
 jobs:
   build:
