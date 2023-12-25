@@ -10,6 +10,9 @@ on: [push]
 permissions:
   contents: read
 
+env:
+   SDL_AUDIODRIVER: "disk"
+    
 jobs:
   build:
     runs-on: ${{ matrix.os }}
