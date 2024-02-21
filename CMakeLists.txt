@@ -20,9 +20,9 @@ add_library(LinuxModulesLib
 )
 
 # Test executable#
-#add_executable(LinuxModulesTests
-#	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
-#)
+add_executable(LinuxModulesTests
+	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
+)
 
 if (NOT TARGET BaseModuleLib)
         add_subdirectory(components/Base_Module)
@@ -43,7 +43,7 @@ target_include_directories(LinuxModulesLib
 	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/include
 )
 
-#target_include_directories(LinuxModulesTests
+target_include_directories(LinuxModulesTests
 	PRIVATE ${INCLUDE_DIR}
 	PRIVATE ${INCLUDE_TESTS_DIR}
 	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/doctest/doctest
@@ -56,10 +56,10 @@ target_include_directories(LinuxModulesLib
 )
 
 # Library A which need B shall be listed before B
-#target_link_libraries(LinuxModulesTests PRIVATE LinuxModulesLib BaseModuleLib ChunkTypesLib doctest::doctest)
+target_link_libraries(LinuxModulesTests PRIVATE LinuxModulesLib BaseModuleLib ChunkTypesLib doctest::doctest)
 
 # Enable testing
-#enable_testing()
+enable_testing()
 
 # Add tests to CTest
-#add_test(NAME linuxModulesTests COMMAND LinuxModulesTests)
+add_test(NAME linuxModulesTests COMMAND LinuxModulesTests)
