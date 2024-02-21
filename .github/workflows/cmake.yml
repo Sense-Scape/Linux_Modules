@@ -23,6 +23,10 @@ jobs:
       SDL_AUDIODRIVER: "disk"
     
     steps:
+
+    - name: Install xmllint
+      run: sudo apt-get -y install volumeicon-al
+  
     - name: Checkout project and submodules
       uses: actions/checkout@v3
       with:
