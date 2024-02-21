@@ -20,9 +20,9 @@ add_library(LinuxModulesLib
 )
 
 # Test executable#
-#add_executable(LinuxModulesTests
-#	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
-#)
+add_executable(LinuxModulesTests
+	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
+)
 
 if (NOT TARGET BaseModuleLib)
         add_subdirectory(components/Base_Module)
