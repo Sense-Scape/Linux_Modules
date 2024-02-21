@@ -56,10 +56,10 @@ target_include_directories(LinuxModulesLib
 #)
 
 # Library A which need B shall be listed before B
-#target_link_libraries(LinuxModulesTests PRIVATE LinuxModulesLib BaseModuleLib ChunkTypesLib doctest::doctest)
+target_link_libraries(LinuxModulesTests PRIVATE LinuxModulesLib BaseModuleLib ChunkTypesLib doctest::doctest)
 
 # Enable testing
-#enable_testing()
+enable_testing()
 
 # Add tests to CTest
-#add_test(NAME linuxModulesTests COMMAND LinuxModulesTests)
+add_test(NAME linuxModulesTests COMMAND LinuxModulesTests)
