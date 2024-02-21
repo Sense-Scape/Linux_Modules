@@ -25,7 +25,7 @@ jobs:
     steps:
 
     - name: Install xmllint
-      run: sudo apt-get -y install volumeicon-al
+      run: sudo apt-get -y install volumeicon-alsa
   
     - name: Checkout project and submodules
       uses: actions/checkout@v3
