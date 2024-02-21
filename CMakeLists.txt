@@ -44,16 +44,16 @@ target_include_directories(LinuxModulesLib
 )
 
 #target_include_directories(LinuxModulesTests
-#	PRIVATE ${INCLUDE_DIR}
-#	PRIVATE ${INCLUDE_TESTS_DIR}
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/doctest/doctest
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/Nlohmann_JSON/include
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/Nlohmann_JSON/include/nlohmann
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/include
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/plog/include
-#	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/include
-#)
+	PRIVATE ${INCLUDE_DIR}
+	PRIVATE ${INCLUDE_TESTS_DIR}
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/doctest/doctest
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/Nlohmann_JSON/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/components/Nlohmann_JSON/include/nlohmann
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/Chunk_Types/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/components/plog/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/components/Base_Module/include
+)
 
 # Library A which need B shall be listed before B
 #target_link_libraries(LinuxModulesTests PRIVATE LinuxModulesLib BaseModuleLib ChunkTypesLib doctest::doctest)
