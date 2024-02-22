@@ -3,3 +3,6 @@
 
 // L
 #include "LinuxMultiClientTCPTxModuleTests.h"
+
+// S
+#include "SoundCardInterfaceModuleTests.h"
