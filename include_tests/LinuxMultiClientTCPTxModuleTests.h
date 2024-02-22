@@ -18,7 +18,7 @@ TEST_CASE("Linux MultiClient TCP TxModule Test")
     
 
     SUBCASE("Constructor test") {
-        CHECK(linuxMultiClientTCPTxModule.GetModuleType() == ModuleType::SessionProcModule);
+        CHECK(linuxMultiClientTCPTxModule.GetModuleType() == ModuleType::LinuxMultiClientTCPTxModule);
     }
 
 }
