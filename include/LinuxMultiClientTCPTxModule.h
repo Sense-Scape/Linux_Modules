@@ -10,7 +10,7 @@
 
 /*Custom Includes*/
 #include "BaseModule.h"
-#include "UDPChunk.h"
+#include "ByteChunk.h"
 
 /**
  * @brief Windows TCP Transmit Module to transmit data from a TCP port

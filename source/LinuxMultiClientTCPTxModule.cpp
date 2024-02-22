@@ -173,8 +173,8 @@ void LinuxMultiClientTCPTxModule::RunClientThread(int &clientSocket, uint16_t u1
 			if (TakeFromBuffer(pBaseChunk))
 			{
 				// Cast it back to a UDP chunk
-				auto udpChunk = std::static_pointer_cast<UDPChunk>(pBaseChunk);
-				const auto pvcData = udpChunk->m_vcDataChunk;
+				auto pByteChunk = std::static_pointer_cast<ByteChunk>(pBaseChunk);
+				const auto pvcData = pByteChunk->m_vcDataChunk;
 				size_t length = pvcData.size();
 
 				// And then transmit (wohoo!!!)
