@@ -24,7 +24,7 @@ jobs:
     
     steps:
 
-    - name: Install xmllint
+    - name: Install ALSA
       run: sudo apt-get install libasound2-dev
   
     - name: Checkout project and submodules
