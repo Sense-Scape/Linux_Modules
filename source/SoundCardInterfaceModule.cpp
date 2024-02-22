@@ -116,6 +116,7 @@ void SoundCardInterfaceModule::UpdateTimeStampMetaData()
 
 void SoundCardInterfaceModule::InitALSA()
 {
+
     int err;
     unsigned int uSampleRate = m_dSampleRate;
 

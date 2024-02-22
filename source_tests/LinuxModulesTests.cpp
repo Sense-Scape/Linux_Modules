@@ -1,12 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 
-#include "doctest.h"
+// L
+#include "LinuxMultiClientTCPTxModuleTests.h"
 
-TEST_CASE("Generic Test")
-{
-    SUBCASE("Checking default constructor") {
-        CHECK(1==1);
-    }
-
-}
+// S
+//#include "SoundCardInterfaceModuleTests.h"
