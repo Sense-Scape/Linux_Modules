@@ -4,10 +4,9 @@
 #include "doctest.h"
 #include "LinuxMultiClientTCPTxModule.h"
 
-
 TEST_CASE("Linux MultiClient TCP TxModule Test")
 {
-   
+
     std::string sIPAddress = "127.0.0.1";
     std::string sTCPPort = "10000";
     int iDatagramSize = 512;
@@ -15,12 +14,11 @@ TEST_CASE("Linux MultiClient TCP TxModule Test")
 
     LinuxMultiClientTCPTxModule linuxMultiClientTCPTxModule(sIPAddress, sTCPPort, iDatagramSize, uBufferSize);
     linuxMultiClientTCPTxModule.SetTestMode(true);
-    
 
-    SUBCASE("Constructor test") {
-        CHECK(linuxMultiClientTCPTxModule.GetModuleType() == ModuleType::LinuxMultiClientTCPTxModule);
+    SUBCASE("Constructor test")
+    {
+        CHECK(linuxMultiClientTCPTxModule.GetModuleType() == "LinuxMultiClientTCPTxModule");
     }
-
 }
 
 #endif
