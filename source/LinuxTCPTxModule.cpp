@@ -91,6 +91,7 @@ void LinuxTCPTxModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
             {
                 std::string strWarning = std::string(__FUNCTION__) + ": Failed to connect to the server.Error code :" + std::to_string(errno);
                 PLOG_WARNING << strWarning;
+                std::this_thread::sleep_for(std::chrono::milliseconds(10000));
                 close(clientSocket);
             }
         }
