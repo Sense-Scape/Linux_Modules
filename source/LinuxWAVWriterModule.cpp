@@ -1,13 +1,13 @@
-#include "WAVWriterModule.h"
+#include "LinuxWAVWriterModule.h"
 
-WAVWriterModule::WAVWriterModule(std::string sFileWritePath, unsigned uMaxInputBufferSize) : BaseModule(uMaxInputBufferSize),
-                                                                                             m_sFileWritePath(sFileWritePath)
+LinuxWAVWriterModule::LinuxWAVWriterModule(std::string sFileWritePath, unsigned uMaxInputBufferSize) : BaseModule(uMaxInputBufferSize),
+                                                                                                       m_sFileWritePath(sFileWritePath)
 {
     // Creating file path for audio files if it does not exist
     CreateFilePath();
 }
 
-void WAVWriterModule::WriteWAVFile(std::shared_ptr<BaseChunk> pBaseChunk)
+void LinuxWAVWriterModule::WriteWAVFile(std::shared_ptr<BaseChunk> pBaseChunk)
 {
     auto pWAVChunk = std::dynamic_pointer_cast<WAVChunk>(pBaseChunk);
 
@@ -34,12 +34,12 @@ void WAVWriterModule::WriteWAVFile(std::shared_ptr<BaseChunk> pBaseChunk)
     fclose(WAVRecordingFile);
 }
 
-void WAVWriterModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
+void LinuxWAVWriterModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 {
     WriteWAVFile(pBaseChunk);
 }
 
-void WAVWriterModule::CreateFilePath()
+void LinuxWAVWriterModule::CreateFilePath()
 {
     if (!std::filesystem::exists(m_sFileWritePath))
     {

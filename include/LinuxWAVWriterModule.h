@@ -10,7 +10,7 @@
 #include "BaseModule.h"
 #include "WAVChunk.h"
 
-class WAVWriterModule : public BaseModule
+class LinuxWAVWriterModule : public BaseModule
 {
 
 private:
@@ -38,14 +38,14 @@ public:
      * @param[in] sFileWritePath path into which WAV files will be written
      * @param[in] uMaxInputBufferSize size of input buffer
      */
-    WAVWriterModule(std::string sFileWritePath, unsigned uMaxInputBufferSize);
-    ~WAVWriterModule(){};
+    LinuxWAVWriterModule(std::string sFileWritePath, unsigned uMaxInputBufferSize);
+    ~LinuxWAVWriterModule(){};
 
     /*
      * @brief Returns module type
      * @param[out] ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::WAVWriterModule; };
+    ModuleType GetModuleType() override { return ModuleType::LinuxWAVWriterModule; };
 };
 
 #endif
