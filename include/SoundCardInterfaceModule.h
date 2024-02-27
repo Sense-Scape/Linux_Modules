@@ -43,7 +43,7 @@ public:
      * @brief Returns module type
      * @param[out] ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::SoundCardInterfaceModule; };
+    std::string GetModuleType() override { return "SoundCardInterfaceModule"; };
 
     /**
      * @brief Check input buffer and try process data

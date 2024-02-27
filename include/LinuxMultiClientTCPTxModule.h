@@ -43,7 +43,7 @@ public:
      * @brief Returns module type
      * @return ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::LinuxMultiClientTCPTxModule; };
+    std::string GetModuleType() override { return "LinuxMultiClientTCPTxModule"; };
 
 private:
     std::string m_sDestinationIPAddress;   ///< string format of host IP address

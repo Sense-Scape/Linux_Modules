@@ -45,7 +45,7 @@ public:
      * @brief Returns module type
      * @param[out] ModuleType of processing module
      */
-    ModuleType GetModuleType() override { return ModuleType::LinuxWAVWriterModule; };
+    std::string GetModuleType() override { return "LinuxWAVWriterModule"; };
 };
 
 #endif
