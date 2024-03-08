@@ -1,14 +1,35 @@
 #include "LinuxWAVReaderModule.h"
 
-LinuxWAVReaderModule::LinuxWAVReaderModule(std::string sFileReadPath, unsigned uMaxInputBufferSize) : BaseModule(uMaxInputBufferSize),
-                                                                                                      m_sFileReadPath(sFileReadPath),
-                                                                                                      m_vsFileList()
+LinuxWAVReaderModule::LinuxWAVReaderModule(std::string sFileReadPath, uint32_t u32ChunkSize, unsigned uMaxInputBufferSize) : BaseModule(uMaxInputBufferSize),
+                                                                                                                             m_sFileReadPath(sFileReadPath),
+                                                                                                                             m_u32ChunkSize(u32ChunkSize),
+                                                                                                                             m_vsFileList()
 {
     SetInputWAVFileList();
 }
 
 void LinuxWAVReaderModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 {
+
+    // check if currently reading
+
+    // if not open file and store as memeber
+
+    // otherwise carry on reading
+
+    // once read convert to time chunk
+
+    // pass it on
+    std::shared_ptr<TimeChunk> pTimeChunk = nullptr;
+    if (!TryPassChunk(std::static_pointer_cast<BaseChunk>(pTimeChunk)))
+    {
+        std::string strWarning = std::string(__FUNCTION__) + ": Next buffer full, dropping current chunk and passing \n";
+        PLOG_WARNING << strWarning;
+    }
+
+    // and then sleep for the amount of time that was sent in chunk
+    auto fChunkDuration_seconds = 1.0f;
+    std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(1000 * fChunkDuration_seconds)));
 }
 
 void LinuxWAVReaderModule::SetInputWAVFileList()
