@@ -2,6 +2,7 @@
 
 LinuxWAVReaderModule::LinuxWAVReaderModule(std::string sFileReadPath, uint32_t u32ChunkSize, unsigned uMaxInputBufferSize) : BaseModule(uMaxInputBufferSize),
                                                                                                                              m_sFileReadPath(sFileReadPath),
+                                                                                                                             m_u16FilePlaybackIndex(0),
                                                                                                                              m_u32ChunkSize(u32ChunkSize),
                                                                                                                              m_vsFileList()
 {
@@ -14,7 +15,9 @@ void LinuxWAVReaderModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
     // Check if currently reading and if not open a file
     if (!m_CurrentWAVFile)
     {
-        m_CurrentWAVFile = sf_open(m_vsFileList[0].c_str(), SFM_READ, &m_sfinfo);
+        m_CurrentWAVFile = sf_open(m_vsFileList[m_u16FilePlaybackIndex].c_str(), SFM_READ, &m_sfinfo);
+        m_u16FilePlaybackIndex += 1;
+
         auto strInfo = "Playback starting: " + m_vsFileList[0];
         PLOG_INFO << strInfo;
     }
@@ -32,9 +35,12 @@ void LinuxWAVReaderModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
 
         auto strInfo = "Playback finished: " + m_vsFileList[0];
         PLOG_INFO << strInfo;
+
+        if (m_u16FilePlaybackIndex >= m_vsFileList.size())
+            m_u16FilePlaybackIndex = 0;
     }
 
-    // once read convert to time chunk
+    // Once read convert to time chunk
     auto pTimeChunk = std::make_shared<TimeChunk>(m_u32ChunkSize, m_sfinfo.samplerate, 0, sizeof(int16_t), sizeof(int16_t) / 8, m_sfinfo.channels);
     for (uint16_t u16ChunkIndex = 0; u16ChunkIndex < m_u32ChunkSize; u16ChunkIndex++)
     {
@@ -43,14 +49,14 @@ void LinuxWAVReaderModule::Process(std::shared_ptr<BaseChunk> pBaseChunk)
     }
     pTimeChunk->SetSourceIdentifier({0, 0});
 
-    // pass it on
+    // Pass it on
     if (!TryPassChunk(std::static_pointer_cast<BaseChunk>(pTimeChunk)))
     {
         std::string strWarning = std::string(__FUNCTION__) + ": Next buffer full, dropping current chunk and passing \n";
         PLOG_WARNING << strWarning;
     }
 
-    // and then sleep for the amount of time that was sent in chunk
+    // And then sleep for the amount of time that was sent in chunk
     auto fChunkDuration_seconds = (float)m_u32ChunkSize / (float)m_sfinfo.samplerate;
     std::this_thread::sleep_for(std::chrono::milliseconds((uint32_t)(1000 * fChunkDuration_seconds)));
 }

@@ -20,6 +20,7 @@ class LinuxWAVReaderModule : public BaseModule
 private:
     std::string m_sFileReadPath;           ///< String from where files shall be read
     std::vector<std::string> m_vsFileList; ///< List of WAV files that shall be read
+    uint16_t m_u16FilePlaybackIndex;       ///< Index of the file that should be played back
     uint32_t m_u32ChunkSize;               ///< Size of TimeChunk chunks
     SNDFILE *m_CurrentWAVFile;             ///< File that is currently being read
     SF_INFO m_sfinfo;
