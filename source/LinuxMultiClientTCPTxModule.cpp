@@ -50,6 +50,8 @@ void LinuxMultiClientTCPTxModule::ConnectTCPSocket(int &sock, uint16_t u16TCPPor
 
 		close(sock);
 		m_bTCPConnected = false;
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(10000));
 	}
 }
 

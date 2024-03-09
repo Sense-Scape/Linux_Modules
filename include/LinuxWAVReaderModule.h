@@ -11,6 +11,9 @@
 #include "BaseModule.h"
 #include "TimeChunk.h"
 
+/*3rd Party*/
+#include <sndfile.hh> // For WAV Files
+
 class LinuxWAVReaderModule : public BaseModule
 {
 
@@ -18,6 +21,8 @@ private:
     std::string m_sFileReadPath;           ///< String from where files shall be read
     std::vector<std::string> m_vsFileList; ///< List of WAV files that shall be read
     uint32_t m_u32ChunkSize;               ///< Size of TimeChunk chunks
+    SNDFILE *m_CurrentWAVFile;             ///< File that is currently being read
+    SF_INFO m_sfinfo;
 
     /*
      * @brief updates the list of palyable files using specificed member direcotry
@@ -45,6 +50,11 @@ public:
      * @param[out] ModuleType of processing module
      */
     std::string GetModuleType() override { return "LinuxWAVReaderModule"; };
+
+    /**
+     * @brief Check input buffer and try process data
+     */
+    void ContinuouslyTryProcess() override;
 };
 
 #endif
