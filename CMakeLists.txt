@@ -24,12 +24,15 @@ add_executable(LinuxModulesTests
 	${SOURCE_TESTS_DIR}/LinuxModulesTests.cpp
 )
 
-if (NOT TARGET BaseModuleLib)
-        add_subdirectory(components/Base_Module)
+if(NOT TARGET BaseModuleLib)
+	add_subdirectory(components/Base_Module)
 endif()
 
-find_library(ALSA_LIBRARY asound)     
+find_library(ALSA_LIBRARY asound REQUIRED)
 target_link_libraries(LinuxModulesLib ${ALSA_LIBRARY})
+
+find_library(SND_LIBRARY sndfile REQUIRED)
+target_link_libraries(LinuxModulesLib ${SND_LIBRARY})
 
 # Include directories for main code and tests
 target_include_directories(LinuxModulesLib
