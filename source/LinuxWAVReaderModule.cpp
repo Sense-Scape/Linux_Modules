@@ -74,6 +74,14 @@ void LinuxWAVReaderModule::SetInputWAVFileList()
             m_vsFileList.emplace_back(entry.path().string());
     }
 
+    // If no file found then throw
+    if (!m_vsFileList.size())
+    {
+        auto strError = "No WAV files found in: " + m_sFileReadPath;
+        PLOG_INFO << strError;
+        throw;
+    }
+
     // Using a range-based for loop
     for (const std::string &sFilePath : m_vsFileList)
         PLOG_INFO << "LinuxWAVReaderModule found: " + sFilePath;
