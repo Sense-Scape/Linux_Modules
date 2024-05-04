@@ -18,6 +18,11 @@ jobs:
     - name: Install ALSA
       run: sudo apt-get install libasound2-dev
 
+    - name: Install SNDFile
+      run: | 
+        sudo apt-get install libsndfile1
+        sudo apt-get install libsndfile1-dev
+
     - name: Install Cross Compiler
       run: sudo apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
