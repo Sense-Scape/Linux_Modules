@@ -95,9 +95,7 @@ void GPSInterfaceModule::TryTransmitPositionData()
             return;
 
         // Read latitude, latitude direction, longitude, and longitude direction
-        std::string strLatitude, strLatDir, strLongitude, strLongDir;
         auto pGPSChunk = ExtractGSPData(strReceivedData);
-        std::cout << pGPSChunk->ToJSON()->dump() << std::endl;
         TryPassChunk(pGPSChunk);
     }
 }
